@@ -20,9 +20,7 @@ class _BubbleMarkerState extends State<BubbleMarker> {
   Widget build(BuildContext context) {
     Widget marker = GestureDetector(
         child: widgetBuilder(context),
-        onTap: () => setState(() {
-              _isPoped = !_isPoped;
-            }));
+        onTap: () => setState(() => _isPoped = !_isPoped));
     Widget w;
     !_isPoped
         ? w = marker
