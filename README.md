@@ -1,16 +1,66 @@
-# map_markers
+# Map markers
 
-A new Flutter project.
+A collection of markers for Flutter Map
 
-## Getting Started
+- **Bubble marker**: a clickable marker that pops up a bubble with a custom widget inside
+- **Photo marker**: a marker that pops up a photo with a hero animation
 
-This project is a starting point for a Flutter application.
+![Screenshot](screenshot/map.gif)
 
-A few resources to get you started if this is your first Flutter project:
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
+import 'package:map_markers/map_markers.dart';
+import 'photo_page.dart';
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+class MapPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FlutterMap(
+        mapController: MapController(),
+        options: MapOptions(center: LatLng(48.853831, 2.348722), zoom: 12.0),
+        layers: [
+          TileLayerOptions(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c']),
+          MarkerLayerOptions(markers: <Marker>[
+            Marker(
+                height: 100.0,
+                width: 120.0,
+                point: LatLng(48.853831, 2.348722),
+                builder: (context) => BubbleMarker(
+                      bubbleColor: Colors.white,
+                      bubbleContentWidgetBuilder: (BuildContext context) {
+                        return const Text("My marker");
+                      },
+                    )),
+            Marker(
+                width: 35.0,
+                height: 35.0,
+                point: LatLng(48.886463, 2.341169),
+                builder: (BuildContext context) {
+                  return PhotoMarker(
+                    imageAsset: "assets/photo.jpeg",
+                    name: "Montmartre",
+                    widgetBuilder: (BuildContext context) {
+                      return Icon(Icons.location_on,
+                          size: 35.0, color: Colors.orangeAccent);
+                    },
+                    routeBuilder: (BuildContext context) =>
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                      return PhotoPage(tag: "Montmartre");
+                    })),
+                  );
+                })
+          ]),
+        ],
+      ),
+    );
+  }
+}
+
+```
