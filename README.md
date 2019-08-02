@@ -1,5 +1,7 @@
 # Map markers
 
+[![pub package](https://img.shields.io/pub/v/map_markers.svg)](https://pub.dartlang.org/packages/map_markers)
+
 A collection of markers for Flutter Map
 
 - **Bubble marker**: a clickable marker that pops up a bubble with a custom widget inside
